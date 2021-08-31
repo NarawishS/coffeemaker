@@ -43,6 +43,7 @@ public class CoffeeMakerTest {
     private Recipe recipe2;
     private Recipe recipe3;
     private Recipe recipe4;
+    private Recipe recipe5;
 
     /**
      * Initializes some recipes to test with and the {@link CoffeeMaker}
@@ -90,6 +91,14 @@ public class CoffeeMakerTest {
         recipe4.setAmtMilk("1");
         recipe4.setAmtSugar("1");
         recipe4.setPrice("65");
+
+        recipe5 = new Recipe();
+        recipe5.setName("Weed Coffee");
+        recipe5.setAmtChocolate("16");
+        recipe5.setAmtCoffee("16");
+        recipe5.setAmtMilk("16");
+        recipe5.setAmtSugar("16");
+        recipe5.setPrice("500");
     }
 
 
@@ -112,6 +121,17 @@ public class CoffeeMakerTest {
 
     @Test
     public void testAddRecipe() {
+        assertNull(coffeeMaker.getRecipes()[0]);
+        coffeeMaker.addRecipe(recipe1);
+        assertEquals(recipe1, coffeeMaker.getRecipes()[0]);
+        coffeeMaker.addRecipe(recipe2);
+        assertEquals(recipe2, coffeeMaker.getRecipes()[1]);
+        coffeeMaker.addRecipe(recipe3);
+        assertEquals(recipe3, coffeeMaker.getRecipes()[2]);
+    }
+
+    @Test
+    public void testAddRecipeOver() {
         assertNull(coffeeMaker.getRecipes()[0]);
         coffeeMaker.addRecipe(recipe1);
         assertEquals(recipe1, coffeeMaker.getRecipes()[0]);
@@ -295,8 +315,13 @@ public class CoffeeMakerTest {
     @Test
     public void testMakeCoffeeIndexOutOfBound() throws ArrayIndexOutOfBoundsException {
         assertArrayEquals(new Recipe[coffeeMaker.getRecipes().length], coffeeMaker.getRecipes());
-        assertEquals(50, coffeeMaker.makeCoffee(0, 50));
+        assertEquals(50, coffeeMaker.makeCoffee(-1, 50));
     }
 
+    @Test
+    public void testMakeCoffeeInsufficientInventory() {
+        coffeeMaker.addRecipe(recipe5);
+        assertEquals(500, coffeeMaker.makeCoffee(0, 500));
+    }
 
 }
