@@ -107,24 +107,68 @@ public class CoffeeMakerTest {
 
     @Test
     public void testRecipeBookSize() {
-        assertEquals(3, coffeeMaker.getRecipes().length);
+        assertEquals("Maximum size should be 3", 3, coffeeMaker.getRecipes().length);
     }
 
     @Test
     public void testAddRecipe() {
-        assertEquals(null, coffeeMaker.getRecipes()[0]);
+        assertNull(coffeeMaker.getRecipes()[0]);
         coffeeMaker.addRecipe(recipe1);
         assertEquals(recipe1, coffeeMaker.getRecipes()[0]);
-        assertEquals(null, coffeeMaker.getRecipes()[1]);
         coffeeMaker.addRecipe(recipe2);
         assertEquals(recipe2, coffeeMaker.getRecipes()[1]);
         coffeeMaker.addRecipe(recipe3);
         assertEquals(recipe3, coffeeMaker.getRecipes()[2]);
+        assertFalse("Recipe should be full and can't be add", coffeeMaker.addRecipe(recipe4));
     }
 
     @Test
-    public void testDeleteRecipe() {
+    public void testDeleteRecipeIndex() {
+        assertNull(coffeeMaker.getRecipes()[0]);
+        coffeeMaker.addRecipe(recipe1);
+        assertEquals(recipe1, coffeeMaker.getRecipes()[0]);
+        coffeeMaker.addRecipe(recipe2);
+        assertEquals(recipe2, coffeeMaker.getRecipes()[1]);
+        coffeeMaker.addRecipe(recipe3);
+        assertEquals(recipe3, coffeeMaker.getRecipes()[2]);
+        assertEquals(recipe3.toString(), coffeeMaker.deleteRecipe(2));
+        assertEquals(new Recipe(), coffeeMaker.getRecipes()[2]);
+    }
 
+    @Test
+    public void testDeleteRecipeNegativeIndex() throws ArrayIndexOutOfBoundsException {
+        coffeeMaker.addRecipe(recipe1);
+        assertNull("Main should be able to handle negative input",
+                coffeeMaker.deleteRecipe(-1));
+    }
+
+    @Test
+    public void testDeleteRecipeOutOfBoundIndex() throws ArrayIndexOutOfBoundsException {
+        coffeeMaker.addRecipe(recipe1);
+        assertNull("Main should be able to handle IndexOutOfBound",
+                coffeeMaker.deleteRecipe(4));
+    }
+
+    @Test
+    public void testEditRecipeIndex() {
+        coffeeMaker.addRecipe(recipe1);
+        assertEquals(recipe1, coffeeMaker.getRecipes()[0]);
+        assertEquals(recipe1.toString(), coffeeMaker.editRecipe(0, recipe2));
+        assertEquals(recipe2, coffeeMaker.getRecipes()[0]);
+        assertEquals("A recipe name mey not be changed",
+                recipe1.getName(), coffeeMaker.getRecipes()[0].getName());
+    }
+
+    @Test
+    public void testEditRecipeNegativeIndex() throws ArrayIndexOutOfBoundsException {
+        coffeeMaker.addRecipe(recipe1);
+        assertNull("Main should be able to handle this", coffeeMaker.editRecipe(-1, recipe2));
+    }
+
+    @Test
+    public void testEditRecipeOutOfBoundIndex() throws ArrayIndexOutOfBoundsException {
+        coffeeMaker.addRecipe(recipe1);
+        assertNull("Main should be able to handle this", coffeeMaker.editRecipe(4, recipe2));
     }
 
     @Test
@@ -154,13 +198,21 @@ public class CoffeeMakerTest {
     @Test
     public void testAddInventoryPositiveInteger() throws InventoryException {
         coffeeMaker.addInventory("1", "0", "0", "0");
-        assertEquals("Coffee: 16\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
+        assertEquals("Positive Integer should be able to add to Inventory",
+                "Coffee: 16\nMilk: 15\nSugar: 15\nChocolate: 15\n",
+                coffeeMaker.checkInventory());
         coffeeMaker.addInventory("0", "1", "0", "0");
-        assertEquals("Coffee: 16\nMilk: 16\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
+        assertEquals("Positive Integer should be able to add to Inventory",
+                "Coffee: 16\nMilk: 16\nSugar: 15\nChocolate: 15\n",
+                coffeeMaker.checkInventory());
         coffeeMaker.addInventory("0", "0", "1", "0");
-        assertEquals("Coffee: 16\nMilk: 16\nSugar: 16\nChocolate: 15\n", coffeeMaker.checkInventory());
+        assertEquals("Positive Integer should be able to add to Inventory",
+                "Coffee: 16\nMilk: 16\nSugar: 16\nChocolate: 15\n",
+                coffeeMaker.checkInventory());
         coffeeMaker.addInventory("0", "0", "0", "1");
-        assertEquals("Coffee: 16\nMilk: 16\nSugar: 16\nChocolate: 16\n", coffeeMaker.checkInventory());
+        assertEquals("Positive Integer should be able to add to Inventory",
+                "Coffee: 16\nMilk: 16\nSugar: 16\nChocolate: 16\n",
+                coffeeMaker.checkInventory());
     }
 
     /**
@@ -172,18 +224,18 @@ public class CoffeeMakerTest {
      * @throws InventoryException if there was an error parsing the quanity
      *                            to a positive integer.
      */
-    @Test(expected = InventoryException.class)
+    @Test
     public void testAddInventoryNegativeInteger() throws InventoryException {
-        assertThrows(InventoryException.class, () ->
+        assertThrows("Error should be thrown when add negative value", InventoryException.class, () ->
                 coffeeMaker.addInventory("-1", "0", "0", "0"));
         assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
-        assertThrows(InventoryException.class, () ->
+        assertThrows("Error should be thrown when add negative value", InventoryException.class, () ->
                 coffeeMaker.addInventory("0", "-1", "0", "0"));
         assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
-        assertThrows(InventoryException.class, () ->
+        assertThrows("Error should be thrown when add negative value", InventoryException.class, () ->
                 coffeeMaker.addInventory("0", "0", "-1", "0"));
         assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
-        assertThrows(InventoryException.class, () ->
+        assertThrows("Error should be thrown when add negative value", InventoryException.class, () ->
                 coffeeMaker.addInventory("0", "0", "0", "-1"));
         assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
     }
@@ -202,9 +254,49 @@ public class CoffeeMakerTest {
      * Then we get the correct change back.
      */
     @Test
-    public void testMakeCoffee() {
+    public void testMakeCoffeeWithEnoughMoney() {
         coffeeMaker.addRecipe(recipe1);
+        assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
         assertEquals(25, coffeeMaker.makeCoffee(0, 75));
+        assertEquals("Ingredient should change when purchase is made",
+                "Coffee: 12\nMilk: 14\nSugar: 14\nChocolate: 15\n", coffeeMaker.checkInventory());
     }
+
+    @Test
+    public void testMakeCoffeeWithNotEnoughMoney() {
+        coffeeMaker.addRecipe(recipe1);
+        assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
+        assertEquals(25, coffeeMaker.makeCoffee(0, 25));
+        assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
+    }
+
+    @Test
+    public void testMakeCoffeeNegativeMoney() {
+        coffeeMaker.addRecipe(recipe1);
+        assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
+        assertEquals(-25, coffeeMaker.makeCoffee(0, -25));
+        assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
+    }
+
+    @Test
+    public void testMakeCoffeeZeroMoney() {
+        coffeeMaker.addRecipe(recipe1);
+        assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
+        assertEquals(0, coffeeMaker.makeCoffee(0, 0));
+        assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
+    }
+
+    @Test
+    public void testMakeCoffeeIndexNoRecipe() {
+        assertArrayEquals(new Recipe[coffeeMaker.getRecipes().length], coffeeMaker.getRecipes());
+        assertEquals(50, coffeeMaker.makeCoffee(0, 50));
+    }
+
+    @Test
+    public void testMakeCoffeeIndexOutOfBound() throws ArrayIndexOutOfBoundsException {
+        assertArrayEquals(new Recipe[coffeeMaker.getRecipes().length], coffeeMaker.getRecipes());
+        assertEquals(50, coffeeMaker.makeCoffee(0, 50));
+    }
+
 
 }
