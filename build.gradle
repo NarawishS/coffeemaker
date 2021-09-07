@@ -7,15 +7,18 @@
  */
 
 // Apply the java-library plugin to add support for Java Library
-apply plugin: 'java-library'
+plugins {
+    id 'java-library'
+    id 'jacoco'
+}
 
 
 // Make sure we are using Java 8.
-if(JavaVersion.current() != JavaVersion.VERSION_1_8) 
-    throw new GradleException("This project requires Java 8, but it's running on "+JavaVersion.current())
+if (JavaVersion.current() != JavaVersion.VERSION_1_8)
+    throw new GradleException("This project requires Java 8, but it's running on " + JavaVersion.current())
 
 sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8 
+targetCompatibility = JavaVersion.VERSION_1_8
 
 
 // In this section you declare where to find the dependencies of your project
@@ -26,15 +29,29 @@ repositories {
     mavenCentral()
 }
 
- test {
-     testLogging.showStandardStreams = true
- }
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = true
+    }
+}
+
+test {
+    testLogging.showStandardStreams = true
+}
 
 dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.13.2'
 
-	// Deprecated.  Use testImplementation.
+    // Use mockito
+    testImplementation "org.mockito:mockito-core:3.+"
+    // Deprecated.  Use testImplementation.
 //    testCompile 'junit:junit:4.12'
 }
 

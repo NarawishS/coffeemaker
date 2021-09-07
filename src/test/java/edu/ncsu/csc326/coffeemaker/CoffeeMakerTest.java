@@ -253,10 +253,10 @@ public class CoffeeMakerTest {
                 coffeeMaker.addInventory("0", "-1", "0", "0"));
         assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
         assertThrows("Error should be thrown when add negative value", InventoryException.class, () ->
-                coffeeMaker.addInventory("0", "0", "-1", "0"));
+                coffeeMaker.addInventory("0", "0", "0", "-1"));
         assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
         assertThrows("Error should be thrown when add negative value", InventoryException.class, () ->
-                coffeeMaker.addInventory("0", "0", "0", "-1"));
+                coffeeMaker.addInventory("0", "0", "-1", "0"));
         assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
     }
 
