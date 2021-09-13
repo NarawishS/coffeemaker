@@ -1,5 +1,6 @@
 package edu.ncsu.csc326.coffeemaker;
 
+import edu.ncsu.csc326.coffeemaker.exceptions.InventoryException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -73,6 +74,26 @@ public class CoffeeMakerMockitoTest {
                 recipes, coffeeMaker.getRecipes());
 
         verify(stubRecipeBook).getRecipes();
+    }
+
+    @Test
+    public void testAddIngredient() throws InventoryException {
+        coffeeMaker.addInventory("1", "0", "0", "0");
+        assertEquals("Positive Integer should be able to add to Inventory",
+                printInventory(16, 15, 15, 15),
+                coffeeMaker.checkInventory());
+        coffeeMaker.addInventory("0", "1", "0", "0");
+        assertEquals("Positive Integer should be able to add to Inventory",
+                printInventory(16, 16, 15, 15),
+                coffeeMaker.checkInventory());
+        coffeeMaker.addInventory("0", "0", "1", "0");
+        assertEquals("Positive Integer should be able to add to Inventory",
+                printInventory(16, 16, 16, 15),
+                coffeeMaker.checkInventory());
+        coffeeMaker.addInventory("0", "0", "0", "1");
+        assertEquals("Positive Integer should be able to add to Inventory",
+                printInventory(16, 16, 16, 15),
+                coffeeMaker.checkInventory());
     }
 
     @Test
