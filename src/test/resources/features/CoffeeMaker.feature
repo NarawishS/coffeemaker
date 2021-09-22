@@ -1,4 +1,6 @@
 Feature: Make a coffee in coffee maker
+  coffeeMaker can add up to 3 recipes
+  coffeeMaker can edit a recipes but the name can't change
   A customer can make a coffee using coffee maker.
 
   Scenario: Create a new coffeeMaker
