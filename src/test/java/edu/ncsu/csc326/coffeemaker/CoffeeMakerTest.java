@@ -110,7 +110,7 @@ public class CoffeeMakerTest {
     @Test
     public void testInitialRecipeBook() {
         for (int i = 0; i < 3; i++) {
-            assertEquals(null, coffeeMaker.getRecipes()[i]);
+            assertNull(coffeeMaker.getRecipes()[i]);
         }
     }
 

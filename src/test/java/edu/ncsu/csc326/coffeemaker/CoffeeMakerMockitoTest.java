@@ -5,11 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import edu.ncsu.csc326.coffeemaker.exceptions.RecipeException;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -56,11 +56,7 @@ public class CoffeeMakerMockitoTest {
     @Test
     public void testAddRecipe() {
         Recipe[] recipes = new Recipe[]{recipe1, recipe2, recipe3};
-
-        when(stubRecipeBook.addRecipe(recipe1)).thenReturn(true);
-        when(stubRecipeBook.addRecipe(recipe2)).thenReturn(true);
-        when(stubRecipeBook.addRecipe(recipe3)).thenReturn(true);
-        when(stubRecipeBook.addRecipe(recipe4)).thenReturn(false);
+        when(stubRecipeBook.addRecipe(any(Recipe.class))).thenReturn(true).thenReturn(true).thenReturn(true).thenThrow(InventoryException.class);
         when(stubRecipeBook.getRecipes()).thenReturn(recipes);
 
         assertTrue(coffeeMaker.addRecipe(recipe1));
