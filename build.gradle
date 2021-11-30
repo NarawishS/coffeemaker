@@ -50,13 +50,15 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
 
     // Use mockito
-    testImplementation 'org.mockito:mockito-core:3.12.4'
+    testImplementation 'org.mockito:mockito-inline:4.0.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.0.0'
+    testImplementation 'org.mockito:mockito-core:4.0.0'
     // Deprecated.  Use testImplementation.
     // testCompile 'junit:junit:4.12'
 
     // Cucumber
-    testImplementation 'io.cucumber:cucumber-java:6.11.0'
-    testImplementation 'io.cucumber:cucumber-junit:6.11.0'
+    testImplementation 'io.cucumber:cucumber-java:7.0.0'
+    testImplementation 'io.cucumber:cucumber-junit:7.0.0'
 }
 
 configurations {
