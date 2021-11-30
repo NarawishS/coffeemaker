@@ -11,6 +11,7 @@ import edu.ncsu.csc326.coffeemaker.exceptions.RecipeException;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -19,7 +20,11 @@ public class CoffeeMakerMockitoTest {
     @Mock
     private RecipeBook stubRecipeBook;
 
+    @Spy
+    private RecipeBook recipeBookSpy;
+
     private CoffeeMaker coffeeMaker;
+    private CoffeeMaker coffeeMaker2;
     private Recipe recipe1;
     private Recipe recipe2;
     private Recipe recipe3;
@@ -46,6 +51,7 @@ public class CoffeeMakerMockitoTest {
     @Before
     public void setUp() throws RecipeException {
         coffeeMaker = new CoffeeMaker(stubRecipeBook, new Inventory());
+        coffeeMaker2 = new CoffeeMaker(recipeBookSpy, new Inventory());
         recipe1 = createRecipe("Coffee", "0", "3", "1", "1", "50");
         recipe2 = createRecipe("Mocha", "10", "3", "1", "1", "75");
         recipe3 = createRecipe("Latte", "0", "3", "3", "1", "100");
@@ -70,6 +76,13 @@ public class CoffeeMakerMockitoTest {
                 recipes, coffeeMaker.getRecipes());
 
         verify(stubRecipeBook).getRecipes();
+    }
+
+    @Test
+    public void testAddRecipeSpy() {
+        assertTrue("coffee not full why failed", recipeBookSpy.addRecipe(recipe1));
+        doReturn(false).when(recipeBookSpy).addRecipe(any(Recipe.class));
+        assertFalse("test spy object failure what went wrong?", recipeBookSpy.addRecipe(recipe2));
     }
 
     @Test
